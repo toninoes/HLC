@@ -1,0 +1,92 @@
+Indice recomendado par un archivo LEEME
+=======================================
+
+1.Introducción
+	Uno de los peligros que acechan a un sistema conectado a Internet son los escaneos en 
+	busca de determinados servicios que puedan tener a la espera de conexiones entrantes y uno 
+	de los servicios que más interesan, si se buscan servidores web (o de otro tipo), es el ssh. 
+	Una vez detectado uno, tratan en muchos casos de usar la fuerza bruta para logearse.  Para 
+	remediar este problema un administrador puede recurrir a los logs de autenticación del 
+	sistema, donde puede encontrar dichos intentos.
+
+	Con esta aplicación se detecta estos intentos y se bloquean las direcciones IP de origen. 
+
+2.Análisis de las posibles soluciones
+	La solución que he elegido es utilizar el modulo netfilter de python, el cual se encargará de
+	añadir. Para ello he creado una función que toma una cadena como parámetro, la cual es la 
+	IP origen a bloquear, la cual la añado a la cadena INPUT de la tabla FILTER.
+	La acción será DROP, con lo que se elimina el paquete sin avisar al equipo que hace la petición. 
+	Me han servido los ejemplos en: http://opensource.bolloretelecom.eu/projects/python-netfilter/
+
+	Otra solución sería hacer os.system('iptables -I INPUT -s IP-A-BLOQUEAR -j DROP'), pero en
+	principio la he descartado sobre todo por obligarme a trastear un poco el módulo
+	python-netfilter.
+
+3.Justificación de la solución elegida 
+	Me parece la mejor solución por hacer uso completamente del lenguaje de programación Python
+	y no tener que abrir una sub-shell para hacer el bloqueo.
+
+4.Planteamiento de la solución elegida 
+	4.1.Cuestiones generales de diseño
+
+
+	4.2.Requerimientos 
+	Tener el interprete de Python instalado y el modulo python-netfilter, el cual puede 
+	hacerse con: sudo apt-get install python-netfilter
+
+	4.3.Instalación
+	Necesita ejecutarse como ROOT si pretende hacerse el bloqueo.
+
+	4.4.Uso	 
+	USO: niunomas.py [-h] [-q] [-t TIPOS] [-n VECES] [log]
+
+	Bloquea una IP no autorizada que intenta conectarse al sistema.
+
+	Argumentos posicionales:
+	  log
+
+	Opciones:
+	  -h, --help  muestra esta ayuda y sale
+	  -q          No se registran los bloqueos
+	  -t TIPOS    Tipos de incidentes que se van a controlar. A: Escaneo de
+		          puertos, B: Intento loguearse como root, C: Busca usuarios
+		          válidos, D: Falseos de host de origen
+	  -n VECES    Veces que se tiene que repetir el incidente para bloquear la IP.
+		          Por defecto: 4
+
+5."Diario" de versiones (Changelog) 
+	changeset:   5:25cdb4e1535f
+	tag:         tip
+	user:        antoniorr
+	date:        Tue Nov 01 17:52:40 2011 +0100
+	summary:     Se me había pasado indicar como log por defecto a /var/log/auth.log si no se indicaba ninún argumento.
+
+	changeset:   4:46e4cf61ca25
+	user:        antoniorr
+	date:        Tue Nov 01 17:26:13 2011 +0100
+	summary:     Programa terminado y funciona. He añadido bastantes comentarios. Falta por terminar el LEEME
+
+	changeset:   3:d3cba990c296
+	user:        antoniorr
+	date:        Tue Nov 01 14:37:11 2011 +0100
+	summary:     He creado una función llamada bloqueaIP() que utiliza el módulo python-netfilter, con la cual bloquearía cada IP.
+
+	changeset:   2:1f8e8f263124
+	user:        antoniorr
+	date:        Sat Oct 29 23:49:11 2011 +0200
+	summary:     Programa básicamente terminado, admite ahora junto a la opción -t uno o más incidentes a controlar, siendo ahora -t A: Escaneo de puertos,-t B: Intento loguearse como root,-t C: Busca usuarios válidos,-t D: Falseos de host de origen. Pero también pueden combinarse, es decir -t ABCD o -t BD,..También indico, siempre que no esté activada la opción -q, el número maniobras no autorizadas para cada IP que sobrepase el -n NUM permitido.
+
+	changeset:   1:b56391e5689b
+	user:        antoniorr
+	date:        Sat Oct 29 21:57:08 2011 +0200
+	summary:     Ahora funcionan, aunque de forma poco elegante todos los tipos del -t, tengo todavía que dejarlo mas bonito. Las IPs aún no las bloqueo de forma real.
+
+	changeset:   0:69c8e93a1c65
+	user:        antoniorr
+	date:        Fri Oct 28 21:51:12 2011 +0200
+	summary:     En este primer intento todas las opciones se procesan bien y tengo de momento 2 opciones de restriccion: 1:Por escaneo de puertos, 2:Por intento de login con root. Las IPs no se bloquean de momento de forma real, pero si no está indicada la opción -q indica qué IPs habría que bloquear. Planteo de momento el bloqueo con os.system, aunque está comentado. De todas formas sugiere que habría que hacer con iptables.
+
+6.Rendimiento
+	6.1 Tiempos de ejecución
+	6.2 Consumo de recursos
+7.TODO

@@ -1,0 +1,79 @@
+Indice recomendado par un archivo LEEME
+=======================================
+
+1.Introducción
+
+	Se quiere ahora extender la funcionalidad de niunomas de manera 
+	que sea capaz de bloquear de manera inmediata las direcciones IP de origen de los intentos 
+	de conexión que sea considerado malintencionado con servicios del mismo o distinto tipo, 
+	es decir, no solo SSH. Esta aplicación se basará en el análisis de uno o más archivos de 
+	registro (logs), que pueden ser compartidos o no por dos o más servidores. Anticipando que 
+	el desarrollo de una aplicación como esta será bastante complejo, en una primera fase se 
+	supondrá que los servidores van a ser todos SSH. También se quiere probar una mejora en 
+	el bloqueo de las direcciones IP mediante el uso directo de las librerías de iptables
+
+	Con esta aplicación se detecta estos intentos y se bloquean las direcciones IP de origen. 
+
+2.Análisis de las posibles soluciones
+	La solución que he elegido es utilizar el modulo python-iptables de python, el cual se encargará de
+	añadir. Para ello he creado una función que toma una cadena como parámetro, la cual es la 
+	IP origen a bloquear, la cual la añado a la cadena INPUT de la tabla FILTER.
+	La acción será DROP, con lo que se elimina el paquete sin avisar al equipo que hace la petición. 
+	Mas info en: http://nilvec.com/python-iptables/
+
+3.Justificación de la solución elegida 
+	Me parece la mejor solución por hacer uso completamente del lenguaje de programación Python
+	y no tener que abrir una sub-shell para hacer el bloqueo.
+
+4.Planteamiento de la solución elegida 
+	4.1.Cuestiones generales de diseño
+
+
+	4.2.Requerimientos 
+	Tener el interprete de Python instalado y el modulo python-netfilter, el cual puede 
+	hacerse con: sudo apt-get install python-netfilter
+
+	4.3.Instalación
+	Necesita ejecutarse como ROOT si pretende hacerse el bloqueo.
+
+	4.4.Uso	 
+	USO: yaseacabo.py [-h] [-q] [-t TIPOS] [-n VECES] log [log ...]
+
+	Bloquea de forma inmediata una IP no autorizada que intenta conectarse al
+	sistema. Para ello vigilará diferentes ficheros logs
+
+	positional arguments:
+	  log         Lista de logs que voy a monitorizar
+
+	optional arguments:
+	  -h, --help  show this help message and exit
+	  -q          No se registran los bloqueos
+	  -t TIPOS    Tipos de incidentes que se van a controlar. A: Escaneo de
+		          puertos, B: Intento loguearse como root, C: Busca usuarios
+		          válidos, D: Falseos de host de origen
+	  -n VECES    Veces que se tiene que repetir el incidente para bloquear la IP.
+		          Por defecto: 4
+
+
+5."Diario" de versiones (Changelog) 
+	changeset:   2:b9f760155786
+	tag:         tip
+	user:        antoniorr
+	date:        Sun Dec 04 21:43:40 2011 +0100
+	summary:     Terminado, sólo me falta por hacer el LEEME
+
+	changeset:   1:9284ad20fbc1
+	user:        antoniorr
+	date:        Sun Dec 04 18:38:06 2011 +0100
+	summary:     Modificado la forma en la que se toman los argumentos, anteriormente los tenía indicado igual que hago con las opciones, indicándole que es type=list, pero así no funciona. Hay que indicarle simplemente nargs='+' y ya los introduce en la variable args.logs en forma de lista. Ahora me voy a poner con la forma de bloqueo Python-iptables
+
+	changeset:   0:09e50e686359
+	user:        antoniorr
+	date:        Fri Dec 02 21:47:15 2011 +0100
+	summary:     Terminado a falta de algunas pruebas y de modificarlo para que en vez de utilizar python-netfilter, utilice python-iptables. Aún no he comenzado el LEEME, aunque incluyo bastantes comentarios en el propio código
+
+
+6.Rendimiento
+	6.1 Tiempos de ejecución
+	6.2 Consumo de recursos
+7.TODO
