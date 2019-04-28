@@ -4,7 +4,7 @@
 ##########################################################################
 # Para bloquear una IP: iptables -I INPUT -s IP-A-BLOQUEAR -j DROP
 # o bien utilizar el modulo python-netfilter:
-# 					sudo apt-get install python-netfilter
+# 	sudo apt-get install python-netfilter
 # Para bloquear IPs debe ejecutarse como ROOT.
 # Tambien disponible en:
 # http://opensource.bolloretelecom.eu/files/python-netfilter-0.5.7.tar.gz
