@@ -9,7 +9,7 @@ from BeautifulSoup import *
 ########################################################################
 # Instalar con sudo apt-get install python-beautifulsoup
 # La version 3.1.0 da problemas en ciertas webs que contengan etiquetas
-# script y cuyos tags esta�n mal formados. La versión 3.1.0.1 es la
+# script y cuyos tags están mal formados. La versión 3.1.0.1 es la
 # incluída en los repositorios de Ubuntu.
 # Mejor descargar la version BeautifulSoup-3.0.8.py de:
 #   http://www.crummy.com/software/BeautifulSoup/download/3.x/
@@ -53,7 +53,7 @@ try:
 	p = div.find("p")
 	b = p.find("b")
 	if b.string != "Keywords (Exact Matches)":
-		print "No existe ninguna pelicula que coincida exactamente con ese título"
+		print "No existe ninguna pelicula que coincida exactamente con ese tÃ­tulo"
 		sys.exit(-1)
 except:
 	print "Error en la busqueda de resultados"
