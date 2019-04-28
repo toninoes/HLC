@@ -11,14 +11,14 @@ import pyinotify
 # Para hacer los bloqueos con python-iptables
 # Para bloquear IPs debe ejecutarse el script como ROOT.
 # Más info: http://nilvec.com/python-iptables/
-#			https://github.com/ldx/python-iptables
-#			http://nilvec.com/stuff/python-iptables/docs/html/index.html
+#           https://github.com/ldx/python-iptables
+#           http://nilvec.com/stuff/python-iptables/docs/html/index.html
 ########################################################################
 import iptc
 
 ##########################################################################
 # Para bloquear las IPs también podría usar el modulo python-netfilter:
-# 					sudo apt-get install python-netfilter
+# 	sudo apt-get install python-netfilter
 # Para bloquear IPs debe ejecutarse el script como ROOT.
 # Tambien disponible en:
 # http://opensource.bolloretelecom.eu/files/python-netfilter-0.5.7.tar.gz
@@ -42,7 +42,7 @@ args = parser.parse_args()
 # El diccionario (dicc) contiene:													 
 #  -Clave: nombre y ruta absoluta de un fichero										
 #  -Valor: Objeto fichero abierto y con el puntero situado en la 
-#		   ultima posición de lectura realizada.														
+#          ultima posición de lectura realizada.														
 ########################################################################
 class MiHilo(threading.Thread):
 	def __init__(self, q, diccFiles):
@@ -58,7 +58,7 @@ class MiHilo(threading.Thread):
 ########################################################################
 # Aqui defino una clase, la cual hereda de ProcessEvent y manejará las 
 # notificaciones específicamente cuando detecte una modificación 
-# "_IN_MODIFY", simplemente lo que	hace cuando detecta una modificación 
+# "_IN_MODIFY", simplemente lo que hace cuando detecta una modificación 
 # en un fichero será meter en la cola "q", el nombre y ruta del fichero 
 # que ha generado ese evento.							
 ########################################################################
@@ -152,7 +152,7 @@ for tipo in args.tipos:
 # El diccionario (diccFiles) contiene:													
 #  -Clave: nombre de un fichero	de log									  
 #  -Valor: Objeto fichero abierto y con el puntero situado al final del 
-#		   fichero (EOF), eso lo hago con el .seek(0,2)											 
+#          fichero (EOF), eso lo hago con el .seek(0,2)											 
 ########################################################################
 diccFiles={}
 for f in args.log:
